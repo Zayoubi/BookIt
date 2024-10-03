@@ -1,6 +1,6 @@
-import 'package:final_project/screens/court_owner.dart';
-import 'package:final_project/screens/user_page.dart';
 import 'package:final_project/signup_page.dart';
+import 'package:final_project/users_screens/court_owner.dart';
+import 'package:final_project/users_screens/player_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -172,10 +172,10 @@ class _LoginPageState extends State<LoginPage> {
                             maintainAnimation: true,
                             maintainState: true,
                             visible: visible,
-                            child: Container(
-                                child: const CircularProgressIndicator(
-                                  color: Colors.white,
-                                ))),
+
+                            child: const CircularProgressIndicator(
+
+                            )),
                       ],
                     ),
                   ),
@@ -208,7 +208,7 @@ class _LoginPageState extends State<LoginPage> {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) =>  const UserPage(),
+              builder: (context) =>  UserPage(),
             ),
           );
         }
