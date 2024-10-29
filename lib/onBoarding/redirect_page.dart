@@ -1,10 +1,9 @@
-import 'package:final_project/auth.dart';
+import 'package:final_project/auth/auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import '../signup_page.dart';
-import '../login.dart';
 
 class RidirectScreen extends StatelessWidget {
   const  RidirectScreen ({super.key});

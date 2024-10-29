@@ -1,4 +1,4 @@
-import 'package:final_project/onBoarding/home_screen.dart';
+import 'package:final_project/onBoarding/onboarding_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:lottie/lottie.dart';
@@ -19,7 +19,7 @@ class _SplashScreenState extends State<SplashScreen>
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
     Future.delayed(const Duration(seconds: 5),() {
       Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (_)=> const HomeScreen())
+          builder: (_)=> const OnBoardingPage())
 
       );
     }

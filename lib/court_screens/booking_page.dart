@@ -66,10 +66,12 @@ class _BookingPageState extends State<BookingPage> {
 
       // Create new reservation
       CourtsBooking newReservation = CourtsBooking(
+
         courtName: newBooking.serviceName,
         startTime: newBooking.bookingStart,
         endTime: newBooking.bookingEnd,
-        playerId: '12345',
+        userName: 'ziad',
+
       );
 
       // Add reservation to Firestore

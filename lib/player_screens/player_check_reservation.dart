@@ -4,15 +4,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart'; // For formatting dates
 
 class PlayerReservationCheck extends StatelessWidget {
-  final String playerId;
+  final String userName;
 
-  const PlayerReservationCheck({super.key, required this.playerId, required List<CourtsBooking> reservations });
+  const PlayerReservationCheck({super.key, required this.userName, required List<CourtsBooking> reservations});
 
   // Method to fetch reservations from Firestore
   Stream<List<CourtsBooking>> getReservations() {
     return FirebaseFirestore.instance
         .collection('bookings')
-        .where('playerId', isEqualTo: playerId) // Query for specific playerId
+        .where('userName', isEqualTo: userName) // Query for specific playerId
         .snapshots()
         .map((snapshot) {
       return snapshot.docs.map((doc) {
@@ -25,7 +25,10 @@ class PlayerReservationCheck extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
     appBar: AppBar(
-      title: const Text('Your Reservation')
+      title: const Text('Your Reservation'),
+      centerTitle: true,
+      automaticallyImplyLeading: false,
+
     ),
       body: StreamBuilder<List<CourtsBooking>>(
         stream: getReservations(),

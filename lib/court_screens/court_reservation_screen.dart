@@ -1,8 +1,11 @@
+import 'package:final_project/users_screens/court_owner.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 
 class CourtOwnerBookingList extends StatefulWidget {
+  const CourtOwnerBookingList({super.key});
+
   @override
   _CourtOwnerBookingListState createState() => _CourtOwnerBookingListState();
 }
@@ -18,7 +21,7 @@ class _CourtOwnerBookingListState extends State<CourtOwnerBookingList> {
         id: doc.id,
         startTime: (data['startTime'] as Timestamp).toDate(),
         endTime: (data['endTime'] as Timestamp).toDate(),
-        playerId: data['playerId'] ?? 'Unknown',
+        playerId: data['userName'] ?? 'Unknown',
       );
     }).toList();
 
@@ -127,15 +130,24 @@ class _CourtOwnerBookingListState extends State<CourtOwnerBookingList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Court Bookings'),
-        backgroundColor: Colors.green,
-      ),
+        appBar: AppBar(
+          leading: IconButton(
+            onPressed:(){
+              Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                      builder: (_)=>const CourtOwner(),
+                  )
+              );
+            } ,
+            icon: const Icon(Icons.arrow_back_sharp),
+          ),
+        ),
+
       body: FutureBuilder<Map<String, List<Booking>>>(
         future: _getBookingsGroupedByDay(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
@@ -170,16 +182,16 @@ class _CourtOwnerBookingListState extends State<CourtOwnerBookingList> {
                     itemBuilder: (context, bookingIndex) {
                       final booking = bookingsForDay[bookingIndex];
                       return Card(
-                        margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                        margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                         elevation: 5,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: ListTile(
-                          contentPadding: EdgeInsets.all(15),
+                          contentPadding: const EdgeInsets.all(15),
                           title: Text(
                             'Player: ${booking.playerId}',
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                            style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
                           subtitle: Text(
                             'Start: ${DateFormat('hh:mm a').format(booking.startTime)}\n'
@@ -190,11 +202,11 @@ class _CourtOwnerBookingListState extends State<CourtOwnerBookingList> {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               IconButton(
-                                icon: Icon(Icons.edit, color: Colors.blue),
+                                icon: const Icon(Icons.edit, color: Colors.blue),
                                 onPressed: () => _showChangeTimeDialog(booking),
                               ),
                               IconButton(
-                                icon: Icon(Icons.delete, color: Colors.red),
+                                icon: const Icon(Icons.delete, color: Colors.red),
                                 onPressed: () => _deleteBooking(booking.id),
                               ),
                             ],

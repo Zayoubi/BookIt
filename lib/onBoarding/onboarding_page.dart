@@ -1,10 +1,11 @@
+import 'package:final_project/auth/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'redirect_page.dart';
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+class OnBoardingPage extends StatelessWidget {
+  const OnBoardingPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +66,7 @@ class HomeScreen extends StatelessWidget {
                         onPressed: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => const RidirectScreen()),
+                            MaterialPageRoute(builder: (context) => const AuthPage()),
                           );
                         },
                         style: ElevatedButton.styleFrom(

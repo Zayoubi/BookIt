@@ -1,7 +1,6 @@
 import 'package:booking_calendar/booking_calendar.dart';
-import 'package:final_project/auth.dart';
+import 'package:final_project/auth/auth.dart';
 import 'package:final_project/court_screens/booking_page.dart';
-import 'package:final_project/court_screens/courts_data.dart';
 import 'package:final_project/player_screens/player_check_reservation.dart';
 import 'package:final_project/player_screens/user_profile.dart';
 import 'package:final_project/player_screens/user_reservation.dart';
@@ -23,23 +22,8 @@ class _UserPageState extends State<UserPage> {
     final FirebaseAuth _auth = FirebaseAuth.instance;
     final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-    // Define your list of courts here
-    final List<Courts> courts = [
-        Courts(
-            id: '1',
-            name: 'Court 1',
-            location: 'Location 1',
-            imageUrl: 'assets/pitch.jpg',
-            price: 50.0,
-        ),
-        Courts(
-            id: '2',
-            name: 'Court 2',
-            location: 'Location 2',
-            imageUrl: 'assets/pitch.jpg',
-            price: 60.0,
-        ),
-    ];
+
+
 
     List<CourtsBooking> reservations = []; // Store bookings
     late final List<Widget> pages;
@@ -49,8 +33,8 @@ class _UserPageState extends State<UserPage> {
         super.initState();
         _loadPlayerInfo(); // Load player info
         pages = [
-            UserReservation(courts: courts),
-            PlayerReservationCheck(reservations: reservations, playerId: '12345'),
+            const UserReservation(),
+            PlayerReservationCheck(reservations: reservations, userName: 'ziad',),
             const ProfilePage(),
         ];
     }
@@ -95,7 +79,9 @@ class _UserPageState extends State<UserPage> {
     Widget build(BuildContext context) {
         return Scaffold(
             appBar: AppBar(
+                backgroundColor: Colors.green,
                 title: const Center(child: Text('BookIt')),
+
             ),
             drawer: Drawer(
                 child: ListView(
@@ -109,7 +95,7 @@ class _UserPageState extends State<UserPage> {
                                 children: [
                                     CircleAvatar(
                                         radius: 30,
-                                        backgroundImage: NetworkImage(profileImageUrl!),
+                                        backgroundImage: NetworkImage(profileImageUrl ?? 'https://example.com/default_profile_image.png'),
                                     ),
                                     const SizedBox(height: 8),
                                     Text(

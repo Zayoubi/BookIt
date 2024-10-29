@@ -1,10 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:final_project/auth.dart';
+import 'package:final_project/auth/auth.dart';
 import 'package:final_project/court_screens/court_owner_home.dart';
 import 'package:final_project/court_screens/court_reservation_screen.dart';
 import 'package:final_project/court_screens/court_edit.dart';
 import 'package:final_project/court_screens/court_owner_profile.dart';
+import 'package:final_project/court_screens/ratingPage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
@@ -24,8 +26,8 @@ class _CourtOwnerState extends State<CourtOwner> {
   // Define your pages
   final List<Widget> pages = [
     const CourtHomeScreen(),
-    CourtOwnerBookingList(),
-    const CourtEdit(),
+    const CourtOwnerBookingList(),
+    const RatingPage (),
   ];
 
   @override
@@ -53,7 +55,9 @@ class _CourtOwnerState extends State<CourtOwner> {
         }
       }
     } catch (e) {
-      print('Error fetching court owner name: $e');
+      if (kDebugMode) {
+        print('Error fetching court owner name: $e');
+      }
       setState(() {
         courtOwnerName = 'Error loading name'; // In case of an error
       });
@@ -64,10 +68,11 @@ class _CourtOwnerState extends State<CourtOwner> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.green,
         centerTitle: true,
         title: Text(
           index == 0 ? 'Home' : index == 1 ? 'Reservation' : 'Court',
-          style: const TextStyle(color: Colors.green),
+          style: const TextStyle(color: Colors.white),
         ),
         actions: [
           IconButton(
@@ -124,7 +129,7 @@ class _CourtOwnerState extends State<CourtOwner> {
               leading: const Icon(Icons.sports_soccer),
               title: const Text('Court'),
               onTap: () {
-                Navigator.pop(context);
+                Navigator.pushNamed(context, '/courtEdit');
               },
             ),
             ListTile(
@@ -157,29 +162,43 @@ class _CourtOwnerState extends State<CourtOwner> {
           ],
         ),
       ),
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: index,
-        onDestinationSelected: (selectedIndex) => setState(() => index = selectedIndex),
-        backgroundColor: Colors.green,
-        destinations: const [
-          NavigationDestination(
-            icon: Icon(Icons.home_outlined),
-            selectedIcon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.calendar_today),
-            selectedIcon: Icon(Icons.calendar_month_outlined),
-            label: 'Reservation',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.sports_soccer_outlined),
-            selectedIcon: Icon(Icons.sports_soccer),
-            label: 'Court',
-          ),
+      // bottomNavigationBar: NavigationBar(
+      //   selectedIndex: index,
+      //   onDestinationSelected: (selectedIndex) => setState(() => index = selectedIndex),
+      //   backgroundColor: Colors.green,
+      //   destinations: const [
+      //     NavigationDestination(
+      //       icon: Icon(Icons.home_outlined),
+      //       selectedIcon: Icon(Icons.home),
+      //       label: 'Home',
+      //     ),
+      //     NavigationDestination(
+      //       icon: Icon(Icons.calendar_today),
+      //       selectedIcon: Icon(Icons.calendar_month_outlined),
+      //       label: 'Reservation',
+      //     ),
+      //     NavigationDestination(
+      //       icon: Icon(Icons.sports_soccer_outlined),
+      //       selectedIcon: Icon(Icons.sports_soccer),
+      //       label: 'Court',
+      //     ),
+      //
+      //   ],
+      // ),
+      body: pages[index],
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: index,
+        onTap: (newIndex) {
+          setState(() {
+            index = newIndex; // Update selected index
+          });
+        },
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home_outlined), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.calendar_month_outlined), label: 'Reservations'),
+          BottomNavigationBarItem(icon: Icon(Icons.sports_soccer_outlined), label: 'Court'),
         ],
       ),
-      body: pages[index], // Use the selected page here
     );
   }
 }

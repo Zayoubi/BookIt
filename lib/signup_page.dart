@@ -1,4 +1,4 @@
-import 'package:final_project/auth.dart';
+import 'package:final_project/auth/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -34,12 +34,15 @@ class _SignupPageState extends State<SignupPage> {
           email: _playerEmailController.text,
           password: _passController.text,
         );
+        FirebaseAuth.instance.currentUser!.sendEmailVerification();
+
         await userPlayer.doc(userCredential.user!.uid).set({
           'Name': _playerNameController.text.trim(),
           'Email': _playerEmailController.text.trim(),
           'UID': userCredential.user!.uid,
           'Role': 'player', // Set the role to 'player'
         });
+
         if (mounted) {
           _showSnackBar('Court Owner added successfully');
           Navigator.of(context).pushReplacement(
@@ -62,16 +65,27 @@ class _SignupPageState extends State<SignupPage> {
 
   Future<void> addCourtOwner() async {
     if (formSignup.currentState!.validate()) {
+
       try {
         final userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: _courtEmailController.text,
           password: _passController.text,
         );
+        FirebaseAuth.instance.currentUser!.sendEmailVerification();
+
         await userCourtOwner.doc(userCredential.user!.uid).set({
           'Name': _courtNameController.text.trim(),
           'CourtEmail': _courtEmailController.text.trim(),
           'UID': userCredential.user!.uid,
           'Role': 'courtOwner', // Set the role to 'courtOwner'
+        });
+        await FirebaseFirestore.instance.collection('courts').doc(userCredential.user!.uid).set({
+          'courtAddress': null,
+          'courtAvailability': null,
+          'courtName': null,
+          'courtPhoneNumber': null,
+          'price': null,
+          'UID': userCredential.user!.uid,
         });
         if (mounted) {
           _showSnackBar('Court Owner added successfully');
@@ -330,6 +344,7 @@ class _SignupPageState extends State<SignupPage> {
                           ),
                         ),
                       ),
+                        const SizedBox(height: 10),
 
 
                         // padding: const EdgeInsets.all(10.0),
